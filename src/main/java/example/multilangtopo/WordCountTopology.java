@@ -38,7 +38,7 @@ public class WordCountTopology {
             collector.emit(new Values(word, count));
         }
 
-        
+
 
 
 
