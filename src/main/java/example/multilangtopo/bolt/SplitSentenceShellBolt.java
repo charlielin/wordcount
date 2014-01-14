@@ -24,6 +24,10 @@ public class SplitSentenceShellBolt extends ShellBolt implements IRichBolt {
         declarer.declare(new Fields("word"));
     }
 
+
+
+
+
     @Override
     public Map<String, Object> getComponentConfiguration() {
         return null;
