@@ -41,6 +41,7 @@ public class RandomSentenceSpout extends BaseRichSpout {
         _collector.emit(new Values(sentence));
     }
 
+
     @Override
     public void ack(Object id) {
     }
