@@ -18,6 +18,7 @@ import java.util.Map;
 
 import example.multilangtopo.spout.RandomSentenceSpout;
 import example.multilangtopo.bolt.SplitSentenceShellBolt;
+import example.multilangtopo.bolt.WordCountShellBolt;
 /**
  * Created with IntelliJ IDEA.
  * User: Lin QiLi
@@ -52,7 +53,7 @@ public class WordCountTopology {
 
         builder.setBolt("split", new SplitSentenceShellBolt(), 8)
                 .shuffleGrouping("spout");
-        builder.setBolt("count", new WordCount(), 12)
+        builder.setBolt("count", new WordCountShellBolt(), 12)
                 .fieldsGrouping("split", new Fields("word"));
 
         Config conf = new Config();
