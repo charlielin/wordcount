@@ -53,7 +53,11 @@
             <resource>
                 <directory>${basedir}/multilang</directory>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
         </resources>
+
         <plugins>
             <!--
             bind the maven-assembly-plugin to the package phase
