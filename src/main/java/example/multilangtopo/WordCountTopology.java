@@ -38,11 +38,6 @@ public class WordCountTopology {
             collector.emit(new Values(word, count));
         }
 
-
-
-
-
-
         @Override
         public void declareOutputFields(OutputFieldsDeclarer declarer) {
             declarer.declare(new Fields("word", "count"));
