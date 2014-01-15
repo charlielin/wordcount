@@ -19,6 +19,9 @@ import java.util.Map;
 import example.multilangtopo.spout.RandomSentenceShellSpout;
 import example.multilangtopo.bolt.SplitSentenceShellBolt;
 import example.multilangtopo.bolt.WordCountShellBolt;
+
+import example.multilangtopo.utils.LoadTopologyStructure;
+import example.multilangtopo.utils.SpoutComponent;
 /**
  * Created with IntelliJ IDEA.
  * User: Lin QiLi
@@ -47,6 +50,7 @@ public class WordCountTopology {
 
     public static void main(String[] args) throws Exception {
 
+        LoadTopologyStructure.getTopologyComponent();
         TopologyBuilder builder = new TopologyBuilder();
 
         builder.setSpout("spout", new RandomSentenceShellSpout(), 5/*BoltNum*/).setNumTasks(5);
@@ -54,6 +58,8 @@ public class WordCountTopology {
                 .shuffleGrouping("spout");
         builder.setBolt("count", new WordCountShellBolt(), 12/*BoltNum*/).setNumTasks(12)
                 .fieldsGrouping("split", new Fields("word"));
+
+        SpoutComponent s1  = new SpoutComponent();
 
 
         Config conf = new Config();
