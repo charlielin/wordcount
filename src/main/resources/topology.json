@@ -1,0 +1,30 @@
+{
+    "Spout": [
+        {
+            "ComponentName": "spout",
+            "ClassName": "RandomSentenceShellSpout",
+            "ComponentNum": 1,
+            "TaskNum": 1
+        }
+    ],
+    "Bolt": [
+        {
+            "ComponentName": "SplitSentence",
+            "ClassName": "SplitSentenceShellBolt",
+            "ComponentNum": 1,
+            "TaskNum": 1,
+            "Grouping": "ShuffleGroup",
+            "GroupingArgs": null,
+            "FromComponent": "spout",
+        },
+        {
+            "ComponentName": "WordCount",
+            "ClassName": "WordCountShellBolt",
+            "ComponentNum": 1,
+            "TaskNum": 1,
+            "Grouping": "fieldsGrouping",
+            "GroupingArgs": "word",
+            "FromComponent": "SplitSentence",
+        }
+    ]
+}
