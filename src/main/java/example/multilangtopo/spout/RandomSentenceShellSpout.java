@@ -20,6 +20,7 @@ public class RandomSentenceShellSpout extends ShellSpout implements IRichSpout{
         super("python", "randomsentence.py");
     }
 
+
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("sentence"));

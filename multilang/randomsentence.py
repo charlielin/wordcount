@@ -16,5 +16,4 @@ class RandomSentenceSpout(storm.Spout):
         storm.log('RandomSentenceSpout, storm.emit: ' + sentence)
         storm.emit([sentence])
 
-
 RandomSentenceSpout().run()
