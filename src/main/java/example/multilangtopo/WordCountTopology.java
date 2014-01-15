@@ -45,9 +45,6 @@ public class WordCountTopology {
         }
     }
 
-
-
-
     public static void main(String[] args) throws Exception {
 
         TopologyBuilder builder = new TopologyBuilder();
