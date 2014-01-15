@@ -16,7 +16,7 @@ import backtype.storm.tuple.Values;
 import java.util.HashMap;
 import java.util.Map;
 
-import example.multilangtopo.spout.RandomSentenceSpout;
+import example.multilangtopo.spout.RandomSentenceShellSpout;
 import example.multilangtopo.bolt.SplitSentenceShellBolt;
 import example.multilangtopo.bolt.WordCountShellBolt;
 /**
@@ -49,12 +49,12 @@ public class WordCountTopology {
 
         TopologyBuilder builder = new TopologyBuilder();
 
-        builder.setSpout("spout", new RandomSentenceSpout(), 5);
-
-        builder.setBolt("split", new SplitSentenceShellBolt(), 8)
+        builder.setSpout("spout", new RandomSentenceShellSpout(), 5/*BoltNum*/).setNumTasks(5);
+        builder.setBolt("split", new SplitSentenceShellBolt(), 8/*BoltNum*/).setNumTasks(5)
                 .shuffleGrouping("spout");
-        builder.setBolt("count", new WordCountShellBolt(), 12)
+        builder.setBolt("count", new WordCountShellBolt(), 12/*BoltNum*/).setNumTasks(12)
                 .fieldsGrouping("split", new Fields("word"));
+
 
         Config conf = new Config();
         conf.setDebug(true);

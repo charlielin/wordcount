@@ -21,7 +21,6 @@ public class RandomSentenceSpout extends BaseRichSpout {
     SpoutOutputCollector _collector;
     Random _rand;
 
-
     @Override
     public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
         _collector = collector;
@@ -40,6 +39,7 @@ public class RandomSentenceSpout extends BaseRichSpout {
         String sentence = sentences[_rand.nextInt(sentences.length)];
         _collector.emit(new Values(sentence));
     }
+
 
     @Override
     public void ack(Object id) {
