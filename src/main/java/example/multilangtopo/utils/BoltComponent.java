@@ -1,7 +1,5 @@
 package example.multilangtopo.utils;
 
-import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Lin QiLi
@@ -9,32 +7,32 @@ import java.util.List;
  * Time: 下午3:13
  */
 public class BoltComponent extends BaseComponent {
-    private String Grouping;
-    private String[] GroupingArgs;
-    private String FromComponent;
+    private String grouping;
+    private String[] grouping_args;
+    private String from_component;
 
     public String getGrouping() {
-        return Grouping;
+        return grouping;
     }
 
     public void setGrouping(String grouping) {
-        this.Grouping = grouping;
+        this.grouping = grouping;
     }
 
 
-    public String getFromComponent() {
-        return FromComponent;
+    public String getFrom_component() {
+        return from_component;
     }
 
-    public void setFromComponent(String fromComponent) {
-        this.FromComponent = fromComponent;
+    public void setFrom_component(String from_component) {
+        this.from_component = from_component;
     }
 
-    public String[] getGroupingArgs() {
-        return GroupingArgs;
+    public String[] getGrouping_args() {
+        return grouping_args;
     }
 
-    public void setGroupingArgs(String[] groupingArgs) {
-        GroupingArgs = groupingArgs;
+    public void setGrouping_args(String[] grouping_args) {
+        this.grouping_args = grouping_args;
     }
 }

@@ -7,40 +7,40 @@ package example.multilangtopo.utils;
  * Time: 下午3:06
  */
 public class BaseComponent {
-    private String ComponentName;
-    private String ClassName;
-    private int ComponentNum;
-    private int TaskNum;
+    private String component_name;
+    private String class_name;
+    private int component_num;
+    private int task_num;
 
-    public String getComponentName() {
-        return ComponentName;
+    public String getComponent_name() {
+        return component_name;
     }
 
-    public void setComponentName(String componentName) {
-        this.ComponentName = componentName;
+    public void setComponent_name(String component_name) {
+        this.component_name = component_name;
     }
 
-    public String getClassName() {
-        return ClassName;
+    public String getClass_name() {
+        return class_name;
     }
 
-    public void setClassName(String className) {
-        this.ClassName = className;
+    public void setClass_name(String class_name) {
+        this.class_name = class_name;
     }
 
-    public int getComponentNum() {
-        return ComponentNum;
+    public int getComponent_num() {
+        return component_num;
     }
 
-    public void setComponentNum(int componentNum) {
-        this.ComponentNum = componentNum;
+    public void setComponent_num(int component_num) {
+        this.component_num = component_num;
     }
 
-    public int getTaskNum() {
-        return TaskNum;
+    public int getTask_num() {
+        return task_num;
     }
 
-    public void setTaskNum(int taskNum) {
-        this.TaskNum = taskNum;
+    public void setTask_num(int task_num) {
+        this.task_num = task_num;
     }
 }

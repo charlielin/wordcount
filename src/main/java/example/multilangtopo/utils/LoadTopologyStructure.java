@@ -4,11 +4,7 @@ package example.multilangtopo.utils;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.log4j.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -49,13 +45,13 @@ public class LoadTopologyStructure {
         BoltComponent[] boltComponents = topologyComponent.getBolt();
 
         for (SpoutComponent spoutComponent : spoutComponents) {
-            _LOG.info("ComponentName: "+spoutComponent.getComponentName());
-            _LOG.info("ClassName: "+spoutComponent.getClassName());
-            _LOG.info("TaskNum: "+spoutComponent.getTaskNum());
+            _LOG.info("ComponentName: "+spoutComponent.getComponent_name());
+            _LOG.info("ClassName: "+spoutComponent.getClass_name());
+            _LOG.info("TaskNum: "+spoutComponent.getTask_num());
         }
 
         for (BoltComponent boltComponent : boltComponents) {
-            _LOG.info("GroupingArgs: "+ Arrays.toString(boltComponent.getGroupingArgs()));
+            _LOG.info("GroupingArgs: "+ Arrays.toString(boltComponent.getGrouping_args()));
         }
 
     }

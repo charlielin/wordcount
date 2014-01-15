@@ -1,30 +1,30 @@
 {
-    "Spout": [
+    "spout": [
         {
-            "ComponentName": "spout",
-            "ClassName": "RandomSentenceShellSpout",
-            "ComponentNum": 1,
-            "TaskNum": 1
+            "component_name": "spout",
+            "class_name": "RandomSentenceShellSpout",
+            "component_num": 1,
+            "task_num": 1
         }
     ],
-    "Bolt": [
+    "bolt": [
         {
-            "ComponentName": "SplitSentence",
-            "ClassName": "SplitSentenceShellBolt",
-            "ComponentNum": 1,
-            "TaskNum": 1,
-            "Grouping": "ShuffleGroup",
-            "GroupingArgs": null,
-            "FromComponent": "spout",
+            "component_name": "SplitSentence",
+            "class_name": "SplitSentenceShellBolt",
+            "component_num": 1,
+            "task_num": 1,
+            "grouping": "ShuffleGroup",
+            "grouping_args": null,
+            "from_component": "spout"
         },
         {
-            "ComponentName": "WordCount",
-            "ClassName": "WordCountShellBolt",
-            "ComponentNum": 1,
-            "TaskNum": 1,
-            "Grouping": "fieldsGrouping",
-            "GroupingArgs": "word",
-            "FromComponent": "SplitSentence",
+            "component_name": "WordCount",
+            "class_name": "WordCountShellBolt",
+            "component_num": 1,
+            "task_num": 1,
+            "grouping": "fieldsGrouping",
+            "grouping_args": ["word"],
+            "from_component": "SplitSentence"
         }
     ]
 }

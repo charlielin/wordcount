@@ -59,7 +59,6 @@ public class WordCountTopology {
         builder.setBolt("count", new WordCountShellBolt(), 12/*BoltNum*/).setNumTasks(12)
                 .fieldsGrouping("split", new Fields("word"));
 
-        SpoutComponent s1  = new SpoutComponent();
 
 
         Config conf = new Config();

@@ -7,22 +7,22 @@ package example.multilangtopo.utils;
  * Time: 下午4:49
  */
 public class TopologyComponent {
-    private SpoutComponent[] Spout;
-    private BoltComponent[] Bolt;
+    private SpoutComponent[] spout;
+    private BoltComponent[] bolt;
 
     public SpoutComponent[] getSpout() {
-        return Spout;
+        return spout;
     }
 
     public void setSpout(SpoutComponent[] spout) {
-        this.Spout = spout;
+        this.spout = spout;
     }
 
     public BoltComponent[] getBolt() {
-        return Bolt;
+        return bolt;
     }
 
     public void setBolt(BoltComponent[] bolt) {
-        this.Bolt = bolt;
+        this.bolt = bolt;
     }
 }
