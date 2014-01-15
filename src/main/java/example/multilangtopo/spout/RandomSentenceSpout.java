@@ -21,7 +21,6 @@ public class RandomSentenceSpout extends BaseRichSpout {
     SpoutOutputCollector _collector;
     Random _rand;
 
-
     @Override
     public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
         _collector = collector;
