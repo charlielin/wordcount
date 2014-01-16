@@ -16,7 +16,7 @@ import java.util.Map;
 public class SplitSentenceShellBolt extends ShellBolt implements IRichBolt {
 
     public SplitSentenceShellBolt() {
-        super("python", "splitsentence.py");
+        super("python", "resources/splitsentence.py");
     }
 
     @Override

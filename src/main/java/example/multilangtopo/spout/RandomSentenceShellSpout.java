@@ -1,6 +1,5 @@
 package example.multilangtopo.spout;
 
-import backtype.storm.spout.ISpout;
 import backtype.storm.spout.ShellSpout;
 import backtype.storm.topology.IRichSpout;
 import backtype.storm.topology.OutputFieldsDeclarer;
@@ -17,7 +16,7 @@ import java.util.Map;
 public class RandomSentenceShellSpout extends ShellSpout implements IRichSpout{
 
     public RandomSentenceShellSpout() {
-        super("python", "randomsentence.py");
+        super("python", "resources/randomsentence.py");
     }
 
 
