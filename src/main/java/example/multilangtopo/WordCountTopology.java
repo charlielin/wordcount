@@ -19,10 +19,7 @@ import example.multilangtopo.spout.RandomSentenceShellSpout;
 import example.multilangtopo.bolt.SplitSentenceShellBolt;
 import example.multilangtopo.bolt.WordCountShellBolt;
 
-import example.multilangtopo.utils.BaseComponent;
-import example.multilangtopo.utils.BoltComponent;
-import example.multilangtopo.utils.LoadTopologyStructure;
-import example.multilangtopo.utils.SpoutComponent;
+import example.multilangtopo.utils.*;
 import org.apache.log4j.Logger;
 
 /**
@@ -67,10 +64,29 @@ public class WordCountTopology {
         }
         TopologyBuilder builder = new TopologyBuilder();
 
-        builder.setSpout("spout", new RandomSentenceShellSpout(), 5/*BoltNum*/).setNumTasks(5);
-        builder.setBolt("split", new SplitSentenceShellBolt(), 8/*BoltNum*/).setNumTasks(5)
+        /*
+        for (SpoutComponent spoutComponent : spoutComponents) {
+            builder.setSpout(
+                    spoutComponent.getComponent_name(),
+                    (IRichSpout)Utils.createObject(spoutComponent.getClass_name()),
+                    spoutComponent.getComponent_num()
+                    )
+                    .setNumTasks(spoutComponent.getTask_num());
+        }*/
+        builder.setSpout("spout", new RandomSentenceShellSpout(), 1/*BoltNum*/).setNumTasks(1);
+        /*
+        for (BoltComponent boltComponent : boltComponents) {
+            builder.setBolt(
+                    boltComponent.getComponent_name(),
+                    (IRichBolt)Utils.createObject(boltComponent.getClass_name()),
+                    boltComponent.getComponent_num()
+                    )
+                    .setNumTasks(boltComponent.getTask_num());
+        }
+        */
+        builder.setBolt("split", new SplitSentenceShellBolt(), 1/*BoltNum*/).setNumTasks(1)
                 .shuffleGrouping("spout");
-        builder.setBolt("count", new WordCountShellBolt(), 12/*BoltNum*/).setNumTasks(12)
+        builder.setBolt("count", new WordCountShellBolt(), 1/*BoltNum*/).setNumTasks(1)
                 .fieldsGrouping("split", new Fields("word"));
 
 

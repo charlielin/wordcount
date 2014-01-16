@@ -11,6 +11,7 @@ class WordCountBolt(stomr.BasicBolt):
             count = 0
         count += 1
         counts[word] = count
+        storm.log(word+" "+count)
         storm.emit([word, count])
 
 WordCountBolt().run()
