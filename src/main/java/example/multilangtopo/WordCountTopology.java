@@ -3,7 +3,6 @@ package example.multilangtopo;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
-import backtype.storm.task.ShellBolt;
 import backtype.storm.topology.*;
 import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
@@ -15,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import example.multilangtopo.spout.RandomSentenceShellSpout;
 import example.multilangtopo.bolt.SplitSentenceShellBolt;
 import example.multilangtopo.bolt.WordCountShellBolt;
 
@@ -64,21 +62,21 @@ public class WordCountTopology {
         }
         TopologyBuilder builder = new TopologyBuilder();
 
-        /*
+
         for (SpoutComponent spoutComponent : spoutComponents) {
             builder.setSpout(
                     spoutComponent.getComponent_name(),
-                    (IRichSpout)Utils.createObject(spoutComponent.getClass_name()),
+                    ComponentFactory.createSpoutObj(spoutComponent.getClass_name()),
                     spoutComponent.getComponent_num()
                     )
                     .setNumTasks(spoutComponent.getTask_num());
-        }*/
-        builder.setSpout("spout", new RandomSentenceShellSpout(), 1/*BoltNum*/).setNumTasks(1);
+        }
+        //builder.setSpout("spout", new RandomSentenceShellSpout(), 1/*BoltNum*/).setNumTasks(1);
         /*
         for (BoltComponent boltComponent : boltComponents) {
             builder.setBolt(
                     boltComponent.getComponent_name(),
-                    (IRichBolt)Utils.createObject(boltComponent.getClass_name()),
+                    (IRichBolt)ComponentFactory.createObject(boltComponent.getClass_name()),
                     boltComponent.getComponent_num()
                     )
                     .setNumTasks(boltComponent.getTask_num());

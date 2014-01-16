@@ -2,7 +2,7 @@
     "spout": [
         {
             "component_name": "spout",
-            "class_name": "RandomSentenceShellSpout",
+            "class_name": "example.multilangtopo.spout.RandomSentenceShellSpout",
             "component_num": 1,
             "task_num": 1
         }
@@ -10,7 +10,7 @@
     "bolt": [
         {
             "component_name": "SplitSentence",
-            "class_name": "SplitSentenceShellBolt",
+            "class_name": "example.multilangtopo.bolt.SplitSentenceShellBolt",
             "component_num": 1,
             "task_num": 1,
             "grouping": "ShuffleGroup",
@@ -19,7 +19,7 @@
         },
         {
             "component_name": "WordCount",
-            "class_name": "WordCountShellBolt",
+            "class_name": "example.multilangtopo.bolt.WordCountShellBolt",
             "component_num": 1,
             "task_num": 1,
             "grouping": "fieldsGrouping",
