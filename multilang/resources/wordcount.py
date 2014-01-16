@@ -1,17 +1,16 @@
 import storm
 
-class WordCountBolt(stomr.BasicBolt):
-    def initialize(self, stormconf, context):
-        counts = {}
+class WordCountBolt(storm.BasicBolt):
+    counts = {}
     def process(self, tup):
         word = tup.values[0]
-        if counts.has_key(word):
-            count = counts[word]
+        if self.counts.has_key(word):
+            count = self.counts[word]
         else:
             count = 0
         count += 1
-        counts[word] = count
-        storm.log(word+" "+count)
+        self.counts[word] = count
+        storm.log(str(word)+" "+str(count))
         storm.emit([word, count])
 
 WordCountBolt().run()

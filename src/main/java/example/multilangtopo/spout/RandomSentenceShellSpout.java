@@ -16,7 +16,7 @@ import java.util.Map;
 public class RandomSentenceShellSpout extends ShellSpout implements IRichSpout{
 
     public RandomSentenceShellSpout() {
-        super("python", "resources/randomsentence.py");
+        super("python", "randomsentence.py");
     }
 
 

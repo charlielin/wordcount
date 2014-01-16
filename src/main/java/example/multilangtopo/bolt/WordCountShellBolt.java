@@ -16,7 +16,7 @@ import java.util.Map;
 public class WordCountShellBolt extends ShellBolt implements IRichBolt {
 
     public WordCountShellBolt() {
-        super("python", "resources/wordcount.py");
+        super("python", "wordcount.py");
     }
 
     @Override
