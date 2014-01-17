@@ -9,10 +9,8 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Method;
+import java.util.*;
 
 import example.multilangtopo.bolt.SplitSentenceShellBolt;
 import example.multilangtopo.bolt.WordCountShellBolt;
@@ -72,26 +70,49 @@ public class WordCountTopology {
                     .setNumTasks(spoutComponent.getTask_num());
         }
         //builder.setSpout("spout", new RandomSentenceShellSpout(), 1/*BoltNum*/).setNumTasks(1);
-        /*
-        for (BoltComponent boltComponent : boltComponents) {
-            builder.setBolt(
-                    boltComponent.getComponent_name(),
-                    (IRichBolt)ComponentFactory.createObject(boltComponent.getClass_name()),
-                    boltComponent.getComponent_num()
-                    )
-                    .setNumTasks(boltComponent.getTask_num());
-        }
-        */
-        builder.setBolt("split", new SplitSentenceShellBolt(), 1/*BoltNum*/).setNumTasks(1)
-                .shuffleGrouping("spout");
-        builder.setBolt("count", new WordCountShellBolt(), 1/*BoltNum*/).setNumTasks(1)
-                .fieldsGrouping("split", new Fields("word"));
 
+        for (BoltComponent boltComponent : boltComponents) {
+            Class invokeBoltDeclarerClass = Class.forName("backtype.storm.topology.BoltDeclarer");
+            String grouping = boltComponent.getGrouping();
+            String fromComponent = boltComponent.getFrom_component();
+            String[] groupingArgs = boltComponent.getGrouping_args();
+
+            BoltDeclarer boltDeclarer = builder.setBolt(
+                    boltComponent.getComponent_name(),
+                    ComponentFactory.createBoltObj(boltComponent.getClass_name()),
+                    boltComponent.getComponent_num()
+            );
+            _LOG.info("builder.setBolt("+boltComponent.getComponent_name()+", "+
+                    ComponentFactory.createBoltObj(boltComponent.getClass_name())+", "+
+                    boltComponent.getComponent_num()+")");
+            if (grouping.equals("fieldsGrouping")) {
+                Class paras[] = {String.class, Fields.class};
+                Method method = invokeBoltDeclarerClass.getMethod(grouping, paras);
+
+                List<String> fieldsList = Arrays.asList(groupingArgs);
+                Fields fields = new Fields(fieldsList);
+                method.invoke(boltDeclarer, new Object[] { fromComponent, fields });
+                _LOG.info("boltDeclarer invoke: "+fromComponent+", "+fieldsList.toString());
+
+            } else if (grouping.equals("globalGrouping")|| grouping.equals("shuffleGrouping")
+                    || grouping.equals("localOrShuffleGrouping") || grouping.equals("noneGrouping")
+                    || grouping.equals("allGrouping") || grouping.equals("directGrouping")) {
+                Class paras[] = {String.class};
+                Method method = invokeBoltDeclarerClass.getMethod(grouping, paras);
+
+                method.invoke(boltDeclarer, new Object[] { fromComponent });
+                _LOG.info("boltDeclarer invoke: "+fromComponent);
+            }
+        }
+
+//        builder.setBolt("split", new SplitSentenceShellBolt(), 1/*BoltNum*/).setNumTasks(1)
+//                .shuffleGrouping("spout");
+//       builder.setBolt("count", new WordCountShellBolt(), 1/*BoltNum*/).setNumTasks(1)
+//                .fieldsGrouping("split", new Fields("word"));
 
 
         Config conf = new Config();
         conf.setDebug(true);
-
 
         if(args!=null && args.length > 0) {
             conf.setNumWorkers(3);

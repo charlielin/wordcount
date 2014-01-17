@@ -13,7 +13,7 @@
             "class_name": "example.multilangtopo.bolt.SplitSentenceShellBolt",
             "component_num": 1,
             "task_num": 1,
-            "grouping": "ShuffleGroup",
+            "grouping": "shuffleGrouping",
             "grouping_args": null,
             "from_component": "spout"
         },
