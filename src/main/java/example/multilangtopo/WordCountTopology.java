@@ -102,6 +102,9 @@ public class WordCountTopology {
 
                 method.invoke(boltDeclarer, new Object[] { fromComponent });
                 _LOG.info("boltDeclarer invoke: "+fromComponent);
+            } else {
+                _LOG.error("grouping ERROR: "+grouping+"\nShould be fieldsGrouping/globalGrouping/shuffleGrouping" +
+                        "/localOrShuffleGrouping/noneGrouping/allGrouping/directGrouping");
             }
         }
 
