@@ -26,24 +26,6 @@ import org.apache.log4j.Logger;
  */
 public class WordCountTopology {
     private static Logger _LOG = Logger.getLogger(WordCountTopology.class);
-    public static class WordCount extends BaseBasicBolt {
-        Map<String, Integer> counts = new HashMap<String, Integer>();
-
-        @Override
-        public void execute(Tuple tuple, BasicOutputCollector collector) {
-            String word = tuple.getString(0);
-            Integer count = counts.get(word);
-            if(count==null) count = 0;
-            count++;
-            counts.put(word, count);
-            collector.emit(new Values(word, count));
-        }
-
-        @Override
-        public void declareOutputFields(OutputFieldsDeclarer declarer) {
-            declarer.declare(new Fields("word", "count"));
-        }
-    }
 
     public static void main(String[] args) throws Exception {
 
@@ -114,20 +96,32 @@ public class WordCountTopology {
 //                .fieldsGrouping("split", new Fields("word"));
 
 
+        TopologyConf topologyConf = LoadTopologyConf.getTopoConf();
         Config conf = new Config();
-        conf.setDebug(true);
+        conf.setDebug(topologyConf.isDebug());
+        if (topologyConf.getMaxspoutpending() != 0) {
+            conf.setMaxSpoutPending(topologyConf.getMaxspoutpending());
+        }
+        if (topologyConf.getMaxtaskparallelism() != 0) {
+            conf.setMaxTaskParallelism(topologyConf.getMaxtaskparallelism());
+        }
 
         if(args!=null && args.length > 0) {
-            conf.setNumWorkers(3);
-
+            if (topologyConf.getWorkersnum() != 0) {
+                conf.setNumWorkers(topologyConf.getWorkersnum());
+            }
+            if (topologyConf.getAckersnum() != 0) {
+                conf.setNumAckers(topologyConf.getAckersnum());
+            }
+            if (topologyConf.getMessagetimeoutsecs() != 0) {
+                conf.setMessageTimeoutSecs(topologyConf.getMessagetimeoutsecs());
+            }
             StormSubmitter.submitTopology(args[0], conf, builder.createTopology());
         } else {
-            conf.setMaxTaskParallelism(3);
-
             LocalCluster cluster = new LocalCluster();
             cluster.submitTopology("word-count", conf, builder.createTopology());
 
-            Thread.sleep(20000);
+            Thread.sleep(topologyConf.getLocalclustersleepmsecs());
 
             cluster.shutdown();
         }
