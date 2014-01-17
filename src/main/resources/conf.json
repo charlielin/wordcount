@@ -1,0 +1,9 @@
+{
+    "localclustersleepmicrosecs": 20000,
+    "maxtaskparallelism", 3,
+    "wordersnum", 3,
+    "ackersnum", 5,
+    "maxspoutpending": 20000,
+    "isdebug", true,
+    "messaagetimeoutsecs": 60
+}
