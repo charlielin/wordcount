@@ -8,7 +8,9 @@ package example.multilangtopo.utils;
  */
 public class BaseComponent {
     private String component_name;
-    private String class_name;
+    private String[] output_fields;
+    private String lang;
+    private String file_name;
     private int component_num;
     private int task_num;
 
@@ -20,12 +22,20 @@ public class BaseComponent {
         this.component_name = component_name;
     }
 
-    public String getClass_name() {
-        return class_name;
+    public String[] getOutput_fields() {
+        return output_fields;
     }
 
-    public void setClass_name(String class_name) {
-        this.class_name = class_name;
+    public void setOutput_fields(String[] output_fields) {
+        this.output_fields = output_fields;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     public int getComponent_num() {
@@ -42,5 +52,13 @@ public class BaseComponent {
 
     public void setTask_num(int task_num) {
         this.task_num = task_num;
+    }
+
+    public String getFile_name() {
+        return file_name;
+    }
+
+    public void setFile_name(String file_name) {
+        this.file_name = file_name;
     }
 }

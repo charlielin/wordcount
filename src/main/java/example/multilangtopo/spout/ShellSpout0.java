@@ -10,19 +10,25 @@ import java.util.Map;
 /**
  * Created with IntelliJ IDEA.
  * User: Lin QiLi
- * Date: 14-1-14
- * Time: 下午4:48
+ * Date: 14-1-24
+ * Time: 下午3:07
  */
-public class RandomSentenceShellSpout extends ShellSpout implements IRichSpout{
+public class ShellSpout0 extends ShellSpout implements IRichSpout {
 
-    public RandomSentenceShellSpout() {
-        super("python", "randomsentence.py");
+    private String[] _fields;
+//    public ShellSpout0() {
+//        super("python", "randomsentence.py");
+//    }
+
+    public ShellSpout0(String lang, String langFile, String[] fields) {
+        super(lang, langFile);
+        _fields = fields;
     }
 
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("sentence"));
+        declarer.declare(new Fields(_fields));
     }
 
     @Override
@@ -30,3 +36,4 @@ public class RandomSentenceShellSpout extends ShellSpout implements IRichSpout{
         return null;
     }
 }
+

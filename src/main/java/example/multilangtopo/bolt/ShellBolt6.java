@@ -10,23 +10,26 @@ import java.util.Map;
 /**
  * Created with IntelliJ IDEA.
  * User: Lin QiLi
- * Date: 14-1-14
- * Time: 上午11:20
+ * Date: 14-1-24
+ * Time: 下午3:31
  */
-public class SplitSentenceShellBolt extends ShellBolt implements IRichBolt {
+public class ShellBolt6 extends ShellBolt implements IRichBolt {
 
-    public SplitSentenceShellBolt() {
-        super("python", "splitsentence.py");
+    private String[] _fields;
+
+//    public ShellBolt1() {
+//        super("python", "splitsentence.py");
+//    }
+
+    public ShellBolt6(String lang, String langFile, String[] fields) {
+        super(lang, langFile);
+        _fields = fields;
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("word"));
+        declarer.declare(new Fields(_fields));
     }
-
-
-
-
 
     @Override
     public Map<String, Object> getComponentConfiguration() {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.log4j.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,13 +25,14 @@ public class LoadTopologyStructure {
         LoadResources topologyStructure = new LoadResources("topology.json");
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         TopologyComponent topologyComponent = mapper.readValue(topologyStructure.getParameterInputStream(), TopologyComponent.class);
         SpoutComponent[] spoutComponents = topologyComponent.getSpout();
         BoltComponent[] boltComponents = topologyComponent.getBolt();
 
         for (SpoutComponent spoutComponent : spoutComponents) {
             _LOG.info("ComponentName: "+spoutComponent.getComponent_name());
-            _LOG.info("ClassName: "+spoutComponent.getClass_name());
+            _LOG.info("ClassName: "+spoutComponent.getLang());
             _LOG.info("TaskNum: "+spoutComponent.getTask_num());
         }
 

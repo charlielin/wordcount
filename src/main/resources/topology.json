@@ -2,7 +2,9 @@
     "spout": [
         {
             "component_name": "spout",
-            "class_name": "example.multilangtopo.spout.RandomSentenceShellSpout",
+            "output_fields": ["sentence"],
+            "lang": "python",
+            "file_name": "randomsentence.py",
             "component_num": 1,
             "task_num": 1
         }
@@ -10,7 +12,9 @@
     "bolt": [
         {
             "component_name": "SplitSentence",
-            "class_name": "example.multilangtopo.bolt.SplitSentenceShellBolt",
+            "output_fields": ["words"],
+            "lang": "python",
+            "file_name": "splitsentence.py",
             "component_num": 1,
             "task_num": 1,
             "grouping": "shuffleGrouping",
@@ -19,12 +23,24 @@
         },
         {
             "component_name": "WordCount",
-            "class_name": "example.multilangtopo.bolt.WordCountShellBolt",
+            "output_fields": ["word", "count"],
+            "lang": "python",
+            "file_name": "wordcount.py",
             "component_num": 1,
             "task_num": 1,
             "grouping": "fieldsGrouping",
-            "grouping_args": ["word"],
+            "grouping_args": ["words"],
             "from_component": "SplitSentence"
         }
-    ]
+    ],
+
+    "_comments": ["component_name: Required. Unique ID for component.",
+                  "output_fields: Required. Specify output fields for this spout.",
+                  "lang: Required. Specify the language of multilang scripts.",
+                  "file_name: Required. Specify the multilang file.",
+                  "component_num: Required. Specify the component num when topology is running.",
+                  "task_num: Optional. The default value equals to 'component_num'.",
+                  "grouping: Required. Specify the grouping way connecting with its source component.",
+                  "grouping_args: Required when using the 'FielsGrouping' way.",
+                  "from_component: Required. Specify the source component ID for this component."]
 }

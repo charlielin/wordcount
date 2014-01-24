@@ -4,16 +4,10 @@ import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.topology.*;
-import backtype.storm.topology.base.BaseBasicBolt;
 import backtype.storm.tuple.Fields;
-import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
 
 import java.lang.reflect.Method;
 import java.util.*;
-
-import example.multilangtopo.bolt.SplitSentenceShellBolt;
-import example.multilangtopo.bolt.WordCountShellBolt;
 
 import example.multilangtopo.utils.*;
 import org.apache.log4j.Logger;
@@ -24,57 +18,75 @@ import org.apache.log4j.Logger;
  * Date: 14-1-14
  * Time: 上午11:11
  */
-public class WordCountTopology {
-    private static Logger _LOG = Logger.getLogger(WordCountTopology.class);
+public class TopologyMain {
+    private static Logger _LOG = Logger.getLogger(TopologyMain.class);
+
 
     public static void main(String[] args) throws Exception {
+        ComponentFactory componentFactory = new ComponentFactory();
 
         List<BaseComponent[]> baseComponentsList = LoadTopologyStructure.getTopologyComponent();
         SpoutComponent[] spoutComponents = (SpoutComponent[]) baseComponentsList.get(0);
         BoltComponent[] boltComponents = (BoltComponent[]) baseComponentsList.get(1);
+
         for (SpoutComponent spoutComponent : spoutComponents) {
             _LOG.info("ComponentName: "+spoutComponent.getComponent_name());
-            _LOG.info("ClassName: "+spoutComponent.getClass_name());
+            _LOG.info("output_fields: "+Arrays.toString(spoutComponent.getOutput_fields()));
+            _LOG.info("lang: "+spoutComponent.getLang());
+            _LOG.info("file_name: "+spoutComponent.getFile_name());
+            _LOG.info("task_num: "+ spoutComponent.getTask_num());
             _LOG.info("TaskNum: "+spoutComponent.getTask_num());
         }
         for (BoltComponent boltComponent : boltComponents) {
+            _LOG.info("ComponentName: "+boltComponent.getComponent_name());
+            _LOG.info("output_fields: "+Arrays.toString(boltComponent.getOutput_fields()));
+            _LOG.info("lang: "+boltComponent.getLang());
+            _LOG.info("file_name: "+boltComponent.getFile_name());
+            _LOG.info("task_num: "+ boltComponent.getTask_num());
+            _LOG.info("TaskNum: "+boltComponent.getTask_num());
+            _LOG.info("grouping: "+boltComponent.getGrouping());
+            _LOG.info("from_component: "+boltComponent.getFrom_component());
             _LOG.info("GroupingArgs: "+ Arrays.toString(boltComponent.getGrouping_args()));
         }
         TopologyBuilder builder = new TopologyBuilder();
 
-
         for (SpoutComponent spoutComponent : spoutComponents) {
+            String lang = spoutComponent.getLang();
+            String fileName = spoutComponent.getFile_name();
+            String[] outputFields = spoutComponent.getOutput_fields();
             builder.setSpout(
                     spoutComponent.getComponent_name(),
-                    ComponentFactory.createSpoutObj(spoutComponent.getClass_name()),
+                    componentFactory.createSpoutObj(lang, fileName, outputFields),
                     spoutComponent.getComponent_num()
                     )
                     .setNumTasks(spoutComponent.getTask_num());
         }
-        //builder.setSpout("spout", new RandomSentenceShellSpout(), 1/*BoltNum*/).setNumTasks(1);
 
         for (BoltComponent boltComponent : boltComponents) {
             Class invokeBoltDeclarerClass = Class.forName("backtype.storm.topology.BoltDeclarer");
+            String lang = boltComponent.getLang();
+            String fileName = boltComponent.getFile_name();
+            String[] outputFields = boltComponent.getOutput_fields();
             String grouping = boltComponent.getGrouping();
             String fromComponent = boltComponent.getFrom_component();
             String[] groupingArgs = boltComponent.getGrouping_args();
-
+            //List<String> outputFieldsList = Arrays.asList(outputFields);
             BoltDeclarer boltDeclarer = builder.setBolt(
                     boltComponent.getComponent_name(),
-                    ComponentFactory.createBoltObj(boltComponent.getClass_name()),
+                    componentFactory.createBoltObj(lang, fileName, outputFields),
                     boltComponent.getComponent_num()
             );
             _LOG.info("builder.setBolt("+boltComponent.getComponent_name()+", "+
-                    ComponentFactory.createBoltObj(boltComponent.getClass_name())+", "+
+                    componentFactory.createBoltObj(lang, fileName, outputFields)+", "+
                     boltComponent.getComponent_num()+")");
             if (grouping.equals("fieldsGrouping")) {
                 Class paras[] = {String.class, Fields.class};
                 Method method = invokeBoltDeclarerClass.getMethod(grouping, paras);
 
-                List<String> fieldsList = Arrays.asList(groupingArgs);
-                Fields fields = new Fields(fieldsList);
+                //List<String> groupingArgsList = Arrays.asList(groupingArgs);
+                Fields fields = new Fields(groupingArgs);
                 method.invoke(boltDeclarer, new Object[] { fromComponent, fields });
-                _LOG.info("boltDeclarer invoke: "+fromComponent+", "+fieldsList.toString());
+                _LOG.info("boltDeclarer invoke: " + fromComponent + ", " + Arrays.toString(groupingArgs));
 
             } else if (grouping.equals("globalGrouping")|| grouping.equals("shuffleGrouping")
                     || grouping.equals("localOrShuffleGrouping") || grouping.equals("noneGrouping")
@@ -89,12 +101,6 @@ public class WordCountTopology {
                         "/localOrShuffleGrouping/noneGrouping/allGrouping/directGrouping");
             }
         }
-
-//        builder.setBolt("split", new SplitSentenceShellBolt(), 1/*BoltNum*/).setNumTasks(1)
-//                .shuffleGrouping("spout");
-//       builder.setBolt("count", new WordCountShellBolt(), 1/*BoltNum*/).setNumTasks(1)
-//                .fieldsGrouping("split", new Fields("word"));
-
 
         TopologyConf topologyConf = LoadTopologyConf.getTopoConf();
         Config conf = new Config();
@@ -119,7 +125,7 @@ public class WordCountTopology {
             StormSubmitter.submitTopology(args[0], conf, builder.createTopology());
         } else {
             LocalCluster cluster = new LocalCluster();
-            cluster.submitTopology("word-count", conf, builder.createTopology());
+            cluster.submitTopology("multilangFrameWork", conf, builder.createTopology());
 
             Thread.sleep(topologyConf.getLocalclustersleepmsecs());
 
